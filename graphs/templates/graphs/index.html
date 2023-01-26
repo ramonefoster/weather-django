@@ -1,0 +1,18 @@
+{% extends 'graphs/main.html' %}
+{% load static %}
+{% block title %}LNA WEATHER DATA{% endblock title %}
+{% block content %}
+
+<div class="row">
+    <div class="card">
+        <div class="card-header">
+            <h2>Weather at OPD Now</h2>
+        </div>
+        <div class="card-body">
+            <iframe src="http://200.131.64.237:8090/graficos/dashboard" height="1000" width="100%" title="Iframe Example"></iframe>
+        </div>
+    </div>    
+</div>
+
+
+{% endblock content %}
