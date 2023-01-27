@@ -59,13 +59,20 @@ def plot_wind(year, month, whole_year):
     return plotly_plot_obj
 
 def plot_general(year, month, element, whole_year):
+    element_units = {'Temperature': '°C', 'Wind-speed': 'km/h', 'Solar-radiation': 'W/m²', 'Bar': 'mmhg', 'Humidity': '%', 'Uv-dose': ''}
+    unit = element_units[element]
+    print(unit)
     df = read_data(year, month, whole_year)    
     ndf = df.replace({'---': np.nan})
     ndf[element] = ndf[element].astype(float)
+    mean = round(ndf[element].mean(), ndigits=2)
 
     ndf = ndf.sort_values(['Datetime', element], ascending=[1,1])
     fig = px.line(ndf, x='Datetime', y=element)
     fig.update_xaxes(rangeslider_visible=True)
+    fig.add_hline(y=mean, line_width=1, line_color="red", line_dash="dot",
+                    annotation_text=f"{mean}{unit}", 
+                    annotation_position="top right", annotation=dict(font_size=15, font_family="Arial", font_color='red'))
 
     #Turn graph object into local plotly graph
     plotly_plot_obj = plot({'data': fig}, output_type='div')

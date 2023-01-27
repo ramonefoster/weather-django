@@ -21,7 +21,6 @@ def index(request):
         month_name = calendar.month_name[month]
         list_month[month_name] = month
     
-    print(list_month)
     context = {'list_years': list_years, 'list_month': list_month, 'elements': types}
     return render(
         request,
@@ -29,6 +28,17 @@ def index(request):
         context= context)
 
 def windPage(year, month):
+    list_years = []
+    list_month = {}
+    types = ['temperature', 'humidity', 'solar-radiation', 'uv-dose', 'wind-speed', 'wind-rose', 'bar', 'wind']
+
+    for y in range(2006,2023):
+        list_years.append(y)
+    
+    for m in range(1,13):
+        month_name = calendar.month_name[m]
+        list_month[month_name] = m
+    
     if isinstance(month, int) and isinstance(year, int):
         page_name = "Wind in " + calendar.month_name[month] + " " + str(year)
         if 1<=month<=12:
@@ -57,12 +67,23 @@ def windPage(year, month):
     
     context = { 'graph_data': wind,
                 'page_name': page_name,
-                'error': error
+                'error': error,
+                'list_years': list_years, 'list_month': list_month, 'elements': types
                  }
     
     return context
 
 def graphPage(request, typegraph, year, month):
+    list_years = []
+    list_month = {}
+
+    for y in range(2006,2023):
+        list_years.append(y)
+    
+    for m in range(1,13):
+        month_name = calendar.month_name[m]
+        list_month[month_name] = m
+    
     types = ['temperature', 'humidity', 'solar-radiation', 'uv-dose', 'wind-speed', 'bar', 'wind-rose']
     if typegraph in types:
         if typegraph == 'wind-rose':
@@ -106,7 +127,8 @@ def graphPage(request, typegraph, year, month):
 
             context = { 'graph_data': plt,
                     'page_name': page_name,
-                    'error': error
+                    'error': error,
+                    'list_years': list_years, 'list_month': list_month, 'elements': types
                     } 
     else:
         return Http404
